@@ -3,7 +3,7 @@ import google.generativeai as genai
 
 # Configure the Gemini API with a secure API key placeholder
 # Replace with your actual API key in a secure environment
-API_KEY = "YOUR_API_KEY_HERE"
+API_KEY = "AIzaSyDfaWjommA_0hSTl33FHeF-vgXWrsWCSN0"
 genai.configure(api_key=API_KEY)
 
 # Initialize the generative model
