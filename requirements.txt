@@ -1,9 +1,8 @@
 streamlit
 google-generativeai
-streamlit_mic_recorder
+PyPDF2
 docx2txt
-io
-PIL
-GoogleTranslator
-mic_recorder
-speech_recognition
+pillow
+speechrecognition
+streamlit-mic-recorder
+deep-translator
