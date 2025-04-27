@@ -1,2 +1,13 @@
 streamlit
 google-generativeai
+streamlit_mic_recorder
+docx2txt
+from PyPDF2 import PdfReader
+io
+PdfReader
+PIL
+deep_translator 
+GoogleTranslator
+streamlit_mic_recorder
+mic_recorder
+speech_recognition
