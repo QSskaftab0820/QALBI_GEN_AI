@@ -2,7 +2,8 @@ streamlit
 google-generativeai
 streamlit_mic_recorder
 docx2txt
-from PyPDF2 import PdfReader
+PyPDF2 
+PdfReader
 io
 PdfReader
 PIL
