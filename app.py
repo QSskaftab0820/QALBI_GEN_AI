@@ -105,22 +105,22 @@ from deep_translator import GoogleTranslator
 # st.markdown(translated_response)
 
 
-from streamlit_mic_recorder import mic_recorder
-import speech_recognition as sr
+# from streamlit_mic_recorder import mic_recorder
+# import speech_recognition as sr
 
-st.markdown("🎤 Or use your voice:")
-audio = mic_recorder(start_prompt="Start Recording", stop_prompt="Stop", key="voice")
+# st.markdown("🎤 Or use your voice:")
+# audio = mic_recorder(start_prompt="Start Recording", stop_prompt="Stop", key="voice")
 
-if audio and not query:
-    st.info("Transcribing your voice...")
-    try:
-        recognizer = sr.Recognizer()
-        with sr.AudioFile(io.BytesIO(audio["bytes"])) as source:
-            audio_data = recognizer.record(source)
-            query = recognizer.recognize_google(audio_data)
-            st.success(f"Recognized: {query}")
-    except Exception as e:
-        st.error("Could not recognize voice input. Try again.")
+# if audio and not query:
+#     st.info("Transcribing your voice...")
+#     try:
+#         recognizer = sr.Recognizer()
+#         with sr.AudioFile(io.BytesIO(audio["bytes"])) as source:
+#             audio_data = recognizer.record(source)
+#             query = recognizer.recognize_google(audio_data)
+#             st.success(f"Recognized: {query}")
+#     except Exception as e:
+#         st.error("Could not recognize voice input. Try again.")
 
 # ===== Response Generation =====
 if submit_button:
