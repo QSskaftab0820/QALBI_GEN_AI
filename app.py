@@ -4,13 +4,9 @@ import docx2txt
 from PyPDF2 import PdfReader
 import io
 from PIL import Image
-from deep_translator import GoogleTranslator
-from dotenv import load_dotenv
-import os
 
-# ===== Load API Key from .env =====
-load_dotenv()
-API_KEY = os.getenv("GOOGLE_API_KEY")
+# ===== API Setup =====
+API_KEY = "AIzaSyCjyTBpC3XqUnLis_L1ZFlzKLiL87qGik0"
 genai.configure(api_key=API_KEY)
 
 # ===== UI Setup =====
@@ -25,6 +21,7 @@ Ask a question, or upload an image/document for help!
 # ===== Input Section =====
 uploaded_file = st.file_uploader("📎 Upload a file (image, PDF, TXT, or DOCX)", type=["png", "jpg", "jpeg", "pdf", "txt", "docx"])
 query = st.text_input("🧠 Your Question", placeholder="E.g., What does this image represent?")
+
 submit_button = st.button("✨ Get Answer")
 
 # ===== Helper: Extract Text =====
@@ -42,6 +39,39 @@ def extract_text_from_file(file):
 
     else:
         return None
+from deep_translator import GoogleTranslator
+
+# Language options
+lang_map = {
+    "English": "en",
+    "Hindi": "hi",
+    "Urdu": "ur",
+    "Tamil": "ta",
+    "Bengali": "bn",
+}
+chosen_lang = st.selectbox("🌐 Output Language", list(lang_map.keys()), index=0)
+
+# After response.text is available:
+translated_response = GoogleTranslator(source='auto', target=lang_map[chosen_lang]).translate("response.text")
+st.markdown(translated_response)
+
+
+from streamlit_mic_recorder import mic_recorder
+import speech_recognition as sr
+
+st.markdown("🎤 Or use your voice:")
+audio = mic_recorder(start_prompt="Start Recording", stop_prompt="Stop", key="voice")
+
+if audio and not query:
+    st.info("Transcribing your voice...")
+    try:
+        recognizer = sr.Recognizer()
+        with sr.AudioFile(io.BytesIO(audio["bytes"])) as source:
+            audio_data = recognizer.record(source)
+            query = recognizer.recognize_google(audio_data)
+            st.success(f"Recognized: {query}")
+    except Exception as e:
+        st.error("Could not recognize voice input. Try again.")
 
 # ===== Response Generation =====
 if submit_button:
@@ -55,19 +85,19 @@ if submit_button:
                 # Handle image input
                 if uploaded_file and uploaded_file.type.startswith("image"):
                     image = Image.open(uploaded_file)
-                    model = genai.GenerativeModel("gemini-2.5-flash-preview-04-17")
+                    model = genai.GenerativeModel("gemini-1.5-flash-latest")
                     response = model.generate_content([query, image])
 
                 # Handle document input
                 elif uploaded_file:
                     text = extract_text_from_file(uploaded_file)
-                    model = genai.GenerativeModel("gemini-2.5-flash-preview-04-17")
+                    model = genai.GenerativeModel("gemini-1.5-flash-latest")
                     full_input = f"{text}\n\nQuestion: {query}" if query else text
                     response = model.generate_content(full_input)
 
                 # Only text input
                 else:
-                    model = genai.GenerativeModel("gemini-2.5-flash-preview-04-17")
+                    model = genai.GenerativeModel("gemini-1.5-flash-latest")
                     response = model.generate_content(query)
 
                 st.markdown(response.text)
